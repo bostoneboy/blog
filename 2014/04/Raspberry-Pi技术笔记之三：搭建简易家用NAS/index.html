@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,archlinux,raspberry pi,nas," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="当家里的手机，平板及电视盒子这种轻量级终端多了后，NAS的需求就愈加强劲了。下方介绍使用Raspberry Pi和2.5吋的移动硬盘打造家用NAS，实现家用存储中心的方案。Raspberry Pi所安装操作系统为Archlinux。  安装移动硬盘树莓派有提供两个USB2.0接口，将移动硬盘与树莓派使用USB接口相连即可。如果移动硬盘不能被系统识别及正常挂载，很大程度是因为移动硬盘的供电不足，可以">
+<meta name="keywords" content="linux,archlinux,raspberry pi,nas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Raspberry Pi技术笔记之三：搭建简易家用NAS">
+<meta property="og:url" content="http://pagebrin.com/2014/04/Raspberry-Pi技术笔记之三：搭建简易家用NAS/index.html">
+<meta property="og:site_name" content="佩吉布林打卡門">
+<meta property="og:description" content="当家里的手机，平板及电视盒子这种轻量级终端多了后，NAS的需求就愈加强劲了。下方介绍使用Raspberry Pi和2.5吋的移动硬盘打造家用NAS，实现家用存储中心的方案。Raspberry Pi所安装操作系统为Archlinux。  安装移动硬盘树莓派有提供两个USB2.0接口，将移动硬盘与树莓派使用USB接口相连即可。如果移动硬盘不能被系统识别及正常挂载，很大程度是因为移动硬盘的供电不足，可以">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-25T07:05:21.063Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Raspberry Pi技术笔记之三：搭建简易家用NAS">
+<meta name="twitter:description" content="当家里的手机，平板及电视盒子这种轻量级终端多了后，NAS的需求就愈加强劲了。下方介绍使用Raspberry Pi和2.5吋的移动硬盘打造家用NAS，实现家用存储中心的方案。Raspberry Pi所安装操作系统为Archlinux。  安装移动硬盘树莓派有提供两个USB2.0接口，将移动硬盘与树莓派使用USB接口相连即可。如果移动硬盘不能被系统识别及正常挂载，很大程度是因为移动硬盘的供电不足，可以">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://pagebrin.com/2014/04/Raspberry-Pi技术笔记之三：搭建简易家用NAS/"/>
+
+
+
+
+
+  <title>Raspberry Pi技术笔记之三：搭建简易家用NAS | 佩吉布林打卡門</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">佩吉布林打卡門</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://pagebrin.com/2014/04/Raspberry-Pi技术笔记之三：搭建简易家用NAS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Bill">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佩吉布林打卡門">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Raspberry Pi技术笔记之三：搭建简易家用NAS</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-04-08T22:37:35+08:00">
+                2014-04-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">技术笔记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术笔记/数码玩物/" itemprop="url" rel="index">
+                    <span itemprop="name">数码玩物</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/04/Raspberry-Pi技术笔记之三：搭建简易家用NAS/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2014/04/Raspberry-Pi技术笔记之三：搭建简易家用NAS/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>当家里的手机，平板及电视盒子这种轻量级终端多了后，NAS的需求就愈加强劲了。下方介绍使用Raspberry Pi和2.5吋的移动硬盘打造家用NAS，实现家用存储中心的方案。Raspberry Pi所安装操作系统为Archlinux。<span style="line-height: 1.5em;"><br></span></p>
+<ol>
+<li>安装移动硬盘<br>树莓派有提供两个USB2.0接口，将移动硬盘与树莓派使用USB接口相连即可。如果移动硬盘不能被系统识别及正常挂载，很大程度是因为移动硬盘的供电不足，可以考虑给移动硬盘单独供电，或者使用『<a href="http://pagebrin.com/2014/04/三头usb数据线同时给raspberry-pi和移动硬盘供电大法/">三头USB数据线同时给Raspberry Pi和移动硬盘供电大法</a>』。连接正常后，查看移动硬盘是否被系统识别可以使用fdisk命令，如下显示中的/dev/mmcblk0为装载操作系统的SD卡，/dev/sda为外接移动硬盘<br><pre>[root@raspberry nas]# fdisk -l</pre></li>
+</ol>
+<p>Disk /dev/mmcblk0: 1.9 GiB, 1967128576 bytes, 3842048 sectors<br>Units: sectors of 1 * 512 = 512 bytes<br>Sector size (logical/physical): 512 bytes / 512 bytes<br>I/O size (minimum/optimal): 512 bytes / 512 bytes<br>Disklabel type: dos<br>Disk identifier: 0x417ee54b</p>
+<p>Device         Boot     Start       End  Blocks  Id System<br>/dev/mmcblk0p1           2048    186367   92160   c W95 FAT32 (LBA)<br>/dev/mmcblk0p2         186368   3667967 1740800   5 Extended<br>/dev/mmcblk0p5         188416   3667967 1739776  83 Linux</p>
+<p>Disk /dev/sda: 298.1 GiB, 320072933376 bytes, 625142448 sectors<br>Units: sectors of 1 * 512 = 512 bytes<br>Sector size (logical/physical): 512 bytes / 512 bytes<br>I/O size (minimum/optimal): 512 bytes / 512 bytes<br>Disklabel type: dos<br>Disk identifier: 0xc95dbbd8</p>
+<p>Device    Boot Start       End    Blocks  Id System<br>/dev/sda3 *     2048 625141759 312569856  83 Linux</p>
+<ol>
+<li><p>格式化移动硬盘如果你的移动硬盘分区格式为NTFS，Linux下可以通过安装额外驱动程序包例如NTFS-3G来支持在其分区上读写，但经测试此类驱动对系统的负载较高，尤其是在性能较低的ARM CPU上，因此强烈建议将移动硬盘格式化为Linux原生支持的ext4分区。如下sda3 为我移动硬盘的分区，此移动硬盘上只有一个分区</p>
+<pre>[root@raspberry nas]# mkfs.ext4 /dev/sda3</pre>
+</li>
+<li><p>挂载移动硬盘，<span style="line-height: 1.5em;">根据个人爱好创建挂载目录，手动挂载移动硬盘分区</span></p>
+<pre>[root@raspberry nas]# mkdir -p /media/aa/nas/
+[root@raspberry nas]# mount /dev/sda3 /media/aa/nas</pre>
+将此分区添加到系统的/etc/fstab文件以实现开机自动挂载
+<pre>[root@raspberry nas]# vi /etc/fstab
+# /etc/fstab: static file system information
+# <file system="">    <dir>    <type>    <options>    <dump>    <pass>
+/dev/mmcblk0p1  /boot           vfat    defaults        0       0
+/dev/sda3 /media/aa ext4 defaults,noatime 0 0</pass></dump></options></type></dir></file></pre>
+</li>
+<li><p>安装支持SMB文件共享协议的samba软件包SMB是一种能用文件共享协议，支持Windows,Linux和Mac OSX等不同操作系统</p>
+<pre>[root@raspberry nas]# pacman -Sy samba</pre>
+将相关进程添加至开机自启动
+<pre>[root@raspberry nas]# systemctl enable smbd nmbd</pre>
+</li>
+<li><p>配置samba将如配置文件追回至/etc/samba/smb.conf，其中path列为你需要共享的目录，下面示例为简单粗暴的将整个硬盘共享出来</p>
+<pre>[root@raspberry nas]#
+[nas@rasp]
+comment = na
+path = /media/aa/nas
+public = yes
+create mask = 0775
+directory mask = 0775
+guest ok = yes
+browseable = yes
+writable = yes
+#read only = yes</pre>
+</li>
+<li><p>重启samba服务，即可使用windows，Mac等机器匿名访问此共享目录了</p>
+<pre>[root@raspberry nas]# systemctl restart smbd nmbd</pre>
+</li>
+<li><p>因为没有为samba指定和添加用户组，客户端对上面所添加的目录只有只读权限，若需要将目录赋予可写和执行权限 ，则只需将对应目录添加其它组的可写和执行权限，例如将nas下面download目录赋予可写和执行权限</p>
+<pre>[root@raspberry nas]# chmod -R o+rwx /media/aa/nas/download</pre></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/archlinux/" rel="tag"># archlinux</a>
+          
+            <a href="/tags/raspberry-pi/" rel="tag"># raspberry pi</a>
+          
+            <a href="/tags/nas/" rel="tag"># nas</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/04/三头USB数据线同时给Raspberry-Pi和移动硬盘供电大法/" rel="next" title="三头USB数据线同时给Raspberry Pi和移动硬盘供电大法">
+                <i class="fa fa-chevron-left"></i> 三头USB数据线同时给Raspberry Pi和移动硬盘供电大法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/04/Raspberry-Pi技术笔记之四：使用aria2打造下载利器/" rel="prev" title="Raspberry Pi技术笔记之四：使用aria2打造下载利器">
+                Raspberry Pi技术笔记之四：使用aria2打造下载利器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Bill</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">104</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://bostoneboy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://pagebrin.com/2014/04/Raspberry-Pi技术笔记之三：搭建简易家用NAS/';
+          this.page.identifier = '2014/04/Raspberry-Pi技术笔记之三：搭建简易家用NAS/';
+          this.page.title = 'Raspberry Pi技术笔记之三：搭建简易家用NAS';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://bostoneboy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

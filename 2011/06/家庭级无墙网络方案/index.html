@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,gfw,vpn,autoddvpn,dd-wrt," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="有没有想过将翻墙这一行为在路由器端完成，这样一来下游的所有接入设备就自然处于无墙的网络环境了，答案是肯定的，本文作为抛砖引玉来浅层次探讨，技术细节不在讨论范围之内。 目前最成熟和稳定的翻墙方法是VPN，但市面上的路由器几乎都不提供VPN的连接功能，好在有一个叫做DD-WRT的第三方路由器固件，我们可以通过刷机的方法来将自己的路由器固件升级为DD-WRT，以获得包括VPN连接在内的多种客制化功能。以">
+<meta name="keywords" content="linux,gfw,vpn,autoddvpn,dd-wrt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="家庭级无墙网络方案">
+<meta property="og:url" content="http://pagebrin.com/2011/06/家庭级无墙网络方案/index.html">
+<meta property="og:site_name" content="佩吉布林打卡門">
+<meta property="og:description" content="有没有想过将翻墙这一行为在路由器端完成，这样一来下游的所有接入设备就自然处于无墙的网络环境了，答案是肯定的，本文作为抛砖引玉来浅层次探讨，技术细节不在讨论范围之内。 目前最成熟和稳定的翻墙方法是VPN，但市面上的路由器几乎都不提供VPN的连接功能，好在有一个叫做DD-WRT的第三方路由器固件，我们可以通过刷机的方法来将自己的路由器固件升级为DD-WRT，以获得包括VPN连接在内的多种客制化功能。以">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-25T07:05:21.123Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="家庭级无墙网络方案">
+<meta name="twitter:description" content="有没有想过将翻墙这一行为在路由器端完成，这样一来下游的所有接入设备就自然处于无墙的网络环境了，答案是肯定的，本文作为抛砖引玉来浅层次探讨，技术细节不在讨论范围之内。 目前最成熟和稳定的翻墙方法是VPN，但市面上的路由器几乎都不提供VPN的连接功能，好在有一个叫做DD-WRT的第三方路由器固件，我们可以通过刷机的方法来将自己的路由器固件升级为DD-WRT，以获得包括VPN连接在内的多种客制化功能。以">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://pagebrin.com/2011/06/家庭级无墙网络方案/"/>
+
+
+
+
+
+  <title>家庭级无墙网络方案 | 佩吉布林打卡門</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">佩吉布林打卡門</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://pagebrin.com/2011/06/家庭级无墙网络方案/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Bill">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佩吉布林打卡門">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">家庭级无墙网络方案</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2011-06-18T16:38:02+08:00">
+                2011-06-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">技术笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2011/06/家庭级无墙网络方案/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2011/06/家庭级无墙网络方案/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>有没有想过将翻墙这一行为在路由器端完成，这样一来下游的所有接入设备就自然处于无墙的网络环境了，答案是肯定的，本文作为抛砖引玉来浅层次探讨，技术细节不在讨论范围之内。</p>
+<p>目前最成熟和稳定的翻墙方法是VPN，但市面上的路由器几乎都不提供VPN的连接功能，好在有一个叫做DD-WRT的第三方路由器固件，我们可以通过刷机的方法来将自己的路由器固件升级为DD-WRT，以获得包括VPN连接在内的多种客制化功能。以实用性为出发点，基于VPN的无墙网络方案有两种：</p>
+<blockquote>
+<p><a href="http://www.dd-wrt.com" target="_blank" rel="noopener">DD-WRT</a>是一个基于linux的开源路由器固件，提供VPN，OpenVPN，无线中继，QoS流量控制，甚至增大发射功率等等功能。并且你可以telnet或是ssh登陆DD-WRT，执行各种命令或是hack。包括TP-Link, D-Link, Buffalo, Cisco Linksys在内的不少路由器已经支持刷DD-WRT固件，<a href="http://www.dd-wrt.com/wiki/index.php/Supported_Devices" target="_blank" rel="noopener">这里是详细的设备支持列表</a>。<br><strong>第一种方案属于技术型，需要自己手动给路由器升级固件，配置autoddvpn：</strong></p>
+</blockquote>
+<p>技术架构：VPN + <a href="http://www.dd-wrt.com" target="_blank" rel="noopener">DD-WRT</a> + <a href="http://code.google.com/p/autoddvpn/" target="_blank" rel="noopener">autoddvpn</a></p>
+<p>将路由器升级至DD-WRT固件以支持VPN连接功能后，即实现了全局VPN上网，但全局VPN有个问题：一旦连上VPN，下游设备的所有流量都会路由到VPN线路上，也就是上国内的网站也需要到美国（以美国为例，严格来说是VPN所在地）去绕一圈，浪费VPN流量事小，还会影响到上国内网站的速度，解决这个恼人问题的项目叫做<a href="http://code.google.com/p/autoddvpn/" target="_blank" rel="noopener">autoddvpn</a>，你需要做的仅仅是在浏览器上登陆路由器的管理页面，在防火墙的页面上添加一行命令，然后保存。autoddvpn 的原理是，按IP地址的物理属性进行路由，即所有中国大陆的IP地址直接走本地网关，其余的则全部走VPN通道。</p>
+<p>资金投入：支持DD-WRT的家用（无线）路由器，200元左右；VPN，目前的市价约为150元每年。</p>
+<p><strong>第二种方案属于懒人型，你只需要掏钱而已：</strong></p>
+<p>国内已经有团队将整套翻墙方案集成到家用路由器里面，提供一条龙的完美无墙网络，做这个事情的是<a href="http://wezone.net" target="_blank" rel="noopener">威众安全路由器</a>。你只需要购买他们的路由器，然后以年为单位支付服务费用，其余所有问题都不用你操作和担心。值得推荐的是，威众安全路由器除适合家庭环境外，也相当适合咖啡馆或是小型公司。</p>
+<p>资金投入：官方公布的标准版价格是360元每台，包括一年的服务费用。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/gfw/" rel="tag"># gfw</a>
+          
+            <a href="/tags/vpn/" rel="tag"># vpn</a>
+          
+            <a href="/tags/autoddvpn/" rel="tag"># autoddvpn</a>
+          
+            <a href="/tags/dd-wrt/" rel="tag"># dd-wrt</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2011/06/AWS-EC2-Sendmail-域名配置/" rel="next" title="AWS EC2 Sendmail 域名配置">
+                <i class="fa fa-chevron-left"></i> AWS EC2 Sendmail 域名配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2011/06/Android电台APP应用之香港篇/" rel="prev" title="Android电台APP应用之香港篇">
+                Android电台APP应用之香港篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Bill</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">104</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://bostoneboy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://pagebrin.com/2011/06/家庭级无墙网络方案/';
+          this.page.identifier = '2011/06/家庭级无墙网络方案/';
+          this.page.title = '家庭级无墙网络方案';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://bostoneboy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

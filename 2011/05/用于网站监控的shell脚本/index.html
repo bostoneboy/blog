@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux,shell," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="分享一个用于监控网站运行情况的shell脚本，功能和结构都很简单，但很大程度上能够让监控自动化。此脚本的作用是按固定频率不停访问给出的URL，当网站不可访问时自动给设定邮箱发送告警邮件以通知用户。 脚本的完整内容如下: #!/bin/sh Author:       Bill JaJaPurpose:      Moniter the web status, send a alert mail w">
+<meta name="keywords" content="linux,shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用于网站监控的shell脚本">
+<meta property="og:url" content="http://pagebrin.com/2011/05/用于网站监控的shell脚本/index.html">
+<meta property="og:site_name" content="佩吉布林打卡門">
+<meta property="og:description" content="分享一个用于监控网站运行情况的shell脚本，功能和结构都很简单，但很大程度上能够让监控自动化。此脚本的作用是按固定频率不停访问给出的URL，当网站不可访问时自动给设定邮箱发送告警邮件以通知用户。 脚本的完整内容如下: #!/bin/sh Author:       Bill JaJaPurpose:      Moniter the web status, send a alert mail w">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-25T07:05:21.143Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用于网站监控的shell脚本">
+<meta name="twitter:description" content="分享一个用于监控网站运行情况的shell脚本，功能和结构都很简单，但很大程度上能够让监控自动化。此脚本的作用是按固定频率不停访问给出的URL，当网站不可访问时自动给设定邮箱发送告警邮件以通知用户。 脚本的完整内容如下: #!/bin/sh Author:       Bill JaJaPurpose:      Moniter the web status, send a alert mail w">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://pagebrin.com/2011/05/用于网站监控的shell脚本/"/>
+
+
+
+
+
+  <title>用于网站监控的shell脚本 | 佩吉布林打卡門</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">佩吉布林打卡門</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://pagebrin.com/2011/05/用于网站监控的shell脚本/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Bill">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佩吉布林打卡門">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">用于网站监控的shell脚本</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2011-05-23T20:11:17+08:00">
+                2011-05-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">技术笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2011/05/用于网站监控的shell脚本/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2011/05/用于网站监控的shell脚本/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>分享一个用于监控网站运行情况的shell脚本，功能和结构都很简单，但很大程度上能够让监控自动化。此脚本的作用是按固定频率不停访问给出的URL，当网站不可访问时自动给设定邮箱发送告警邮件以通知用户。</p>
+<p>脚本的完整内容如下:</p>
+<p><pre>#!/bin/sh</pre></p>
+<h1 id="Author-Bill-JaJa"><a href="#Author-Bill-JaJa" class="headerlink" title="Author:       Bill JaJa"></a>Author:       Bill JaJa</h1><h1 id="Purpose-Moniter-the-web-status-send-a-alert-mail-when-it’s-not-available"><a href="#Purpose-Moniter-the-web-status-send-a-alert-mail-when-it’s-not-available" class="headerlink" title="Purpose:      Moniter the web status, send a alert mail when it’s not available."></a>Purpose:      Moniter the web status, send a alert mail when it’s not available.</h1><p>export LANG=C</p>
+<p>EMAIL=”<a href="mailto:EMAIL=”xxx@xxxmail.com" target="_blank" rel="noopener">xxx@xxxmail.com</a>”<br>LOG_FILE=”/var/monitor/log/web<em>status</em><code>date &#39;+%Y%m&#39;</code>.log”<br>TMP_EMAIL=”/var/monitor/.tmp.mail.<code>date &#39;+%s&#39;</code>“<br>URL=”$1” # DO NOT CHANGE IT.</p>
+<p>if [ $2 ]<br>then<br>        sleep $2<br>fi</p>
+<h1 id="Define-function-“ECHO”-append-the-timestamp-at-the-head-of-every-record"><a href="#Define-function-“ECHO”-append-the-timestamp-at-the-head-of-every-record" class="headerlink" title="Define function “ECHO”, append the timestamp at the head of every record."></a>Define function “ECHO”, append the timestamp at the head of every record.</h1><p>ECHO () {<br>printf “%s “ <code>date &#39;+%Y-%m-%d %H:%M:%S&#39;</code><br>echo $1<br>}</p>
+<h1 id="Define-function-HTTP-CODE-obtain-the-status-of-web-service"><a href="#Define-function-HTTP-CODE-obtain-the-status-of-web-service" class="headerlink" title="Define function HTTP_CODE, obtain the status of web service."></a>Define function HTTP_CODE, obtain the status of web service.</h1><p>HTTP_CODE () {<br>http_code=<code>curl -m 20 -o /dev/null -s -w %{http_code} $URL</code><br>}</p>
+<h1 id="Define-function-MAIL"><a href="#Define-function-MAIL" class="headerlink" title="Define function MAIL."></a>Define function MAIL.</h1><p>MAIL () {<br>echo “$URL is not available now, pls pay attention.” &gt; $TMP_EMAIL<br>echo “And the Server ‘s time is: “ &gt;&gt; $TMP_EMAIL<br>date &gt;&gt; $TMP_EMAIL<br>echo &gt;&gt; $TMP_EMAIL<br>echo “——“ &gt;&gt; $TMP_EMAIL<br>echo “BR” &gt;&gt; $TMP_EMAIL<br>echo “Shell Robot.” &gt;&gt; $TMP_EMAIL<br>mail -s “Server Alert: $URL” $EMAIL &lt; $TMP_EMAIL<br>rm $TMP_EMAIL<br>}</p>
+<p>n=0<br>HTTP_CODE<br>if [ $http_code -eq 200 ]<br>then<br>        ECHO “|http_code:200|+$n|webpage visit success.|$URL” &gt;&gt; $LOG_FILE<br>else<br>        while [ $http_code -ne 200 ]<br>        do<br>                n=<code>expr $n + 1</code><br>                ECHO “|http_code:$http_code|+$n|webpage visit failed. |$URL” &gt;&gt; $LOG_FILE<br>                if [ $n -eq 5 ]; then<br>                        MAIL $1; exit 0<br>                fi<br>                sleep 10<br>                HTTP_CODE<br>        done<br>fi</p>
+<h1 id="THE-END"><a href="#THE-END" class="headerlink" title="THE END."></a>THE END.</h1><p>这段脚本的核心其实只有如下一行：</p>
+<p><pre>http_code=<code>curl -m 20 -o /dev/null -s -w %{http_code} $URL</code></pre><br>也就是使用Linux自带的curl工具访问给出网址，并返回http_code，当http_code不等于200时即可认为网站存在访问故障，但考虑到实际的不稳定因素，当第一次返回http_code不等200时，脚本休眠10秒钟，然后继续访问，累计连续不可访问次数达到5次后触发告警邮件。</p>
+<p>可配置字段，脚本第二段中有如下三个可配置字段：</p>
+<p>EMAIL：接收告警信息的email地址。<br>LOG_FILE：日志文件，建议使用绝对路径；最后的web<em>status</em><code>date &#39;+%Y%m&#39;</code>.log代表以月为单位分割日志，如web_status_201105.log<br>TMP_EMAIL：临时邮件文件，同样建议使用绝对路径，保持所在目录有写权限即可。</p>
+<p>使用方法：</p>
+<p>脚本后面需跟两个参数：第一个参数为监控网站的URL，第二个参数为延时时间（可选，以秒为单位，建议在对多个网站进行监控时添加），将此脚本添加到操作系统的crontab里面，按需求设定运行频率，建议2分钟一次。若有多个网站需监控，在crontab里面添加多行即可，每个URL一行，如下为同时对三个网站进行监控：</p>
+<p><em>/2 </em> <em> </em> <em> sh /var/monitor/web_monitor.sh <a href="http://www.qq.com" target="_blank" rel="noopener">http://www.qq.com</a>
+</em>/2 <em> </em> <em> </em> sh /var/monitor/web_monitor.sh <a href="http://www.qqq.com" target="_blank" rel="noopener">http://www.qqq.com</a> 5<br><em>/2 </em> <em> </em> * sh /var/monitor/web_monitor.sh <a href="http://www.qqqq.com" target="_blank" rel="noopener">http://www.qqqq.com</a> 10</p>
+<p>同时此脚本会将所有访问结果记录至日志文件，日志片段如下：</p>
+<p><pre>[bill@JAJA log]$ tail -f web_status_201105.log<br>2011-05-23 19:28:01 |http_code:200|+0|webpage visit success.|<a href="http://www.qq.com" target="_blank" rel="noopener">http://www.qq.com</a><br>2011-05-23 19:28:05 |http_code:200|+0|webpage visit success.|<a href="http://www.qqq.com" target="_blank" rel="noopener">http://www.qqq.com</a><br>2011-05-23 19:28:11 |http_code:200|+0|webpage visit success.|<a href="http://www.qqqq.com" target="_blank" rel="noopener">http://www.qqqq.com</a><br>2011-05-23 19:28:20 |http_code:200|+0|webpage visit success.|<a href="http://www.qq.com" target="_blank" rel="noopener">http://www.qq.com</a><br>2011-05-23 19:28:20 |http_code:200|+0|webpage visit success.|<a href="http://www.qqq.com" target="_blank" rel="noopener">http://www.qqq.com</a><br>2011-05-23 19:30:01 |http_code:200|+0|webpage visit success.|<a href="http://www.qqqq.com" target="_blank" rel="noopener">http://www.qqqq.com</a></pre><br>补充：使用此脚本前请确保系统的邮件服务可行，Linux 邮件服务为sendmail<br>查看邮件服务运行状态的命令：service sendmail status<br>启用邮件服务：service sendmail start</p>
+<p>在Github上查看源代码：<a href="https://github.com/bostoneboy/shell-scripts/blob/master/web-monitor.sh" target="_blank" rel="noopener">https://github.com/bostoneboy/shell-scripts/blob/master/web-monitor.sh</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/shell/" rel="tag"># shell</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2011/05/Kindle-对txt文档中换行符的处理/" rel="next" title="Kindle 对txt文档中换行符的处理">
+                <i class="fa fa-chevron-left"></i> Kindle 对txt文档中换行符的处理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2011/05/music-beta-by-Google使用体验/" rel="prev" title="music beta by Google使用体验">
+                music beta by Google使用体验 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Bill</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">104</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Author-Bill-JaJa"><span class="nav-number">1.</span> <span class="nav-text">Author:       Bill JaJa</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Purpose-Moniter-the-web-status-send-a-alert-mail-when-it’s-not-available"><span class="nav-number">2.</span> <span class="nav-text">Purpose:      Moniter the web status, send a alert mail when it’s not available.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Define-function-“ECHO”-append-the-timestamp-at-the-head-of-every-record"><span class="nav-number">3.</span> <span class="nav-text">Define function “ECHO”, append the timestamp at the head of every record.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Define-function-HTTP-CODE-obtain-the-status-of-web-service"><span class="nav-number">4.</span> <span class="nav-text">Define function HTTP_CODE, obtain the status of web service.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Define-function-MAIL"><span class="nav-number">5.</span> <span class="nav-text">Define function MAIL.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#THE-END"><span class="nav-number">6.</span> <span class="nav-text">THE END.</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://bostoneboy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://pagebrin.com/2011/05/用于网站监控的shell脚本/';
+          this.page.identifier = '2011/05/用于网站监控的shell脚本/';
+          this.page.title = '用于网站监控的shell脚本';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://bostoneboy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

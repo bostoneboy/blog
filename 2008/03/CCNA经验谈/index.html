@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ccna," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="不到三个星期的时候终于把CCNA搞定了，说点我自己的学习的经验吧．我还没开始上培训班，培训班这个周末才开始，我当然会去啦，因为钱都已经交了，就当温习嘛．第一件事当然就是看书啦，每单后面的书面实验，动手实验和复习题是必做的，这些对你学完一章是很好的检阅和补遗，记得把错的知识点圈起来多回头看．书看完第一遍后就可以开始背题库了（题目当然还是要理解的，死记硬背我可不会），最新的题库网上都找得到，记得多泡论">
+<meta name="keywords" content="ccna">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CCNA经验谈">
+<meta property="og:url" content="http://pagebrin.com/2008/03/CCNA经验谈/index.html">
+<meta property="og:site_name" content="佩吉布林打卡門">
+<meta property="og:description" content="不到三个星期的时候终于把CCNA搞定了，说点我自己的学习的经验吧．我还没开始上培训班，培训班这个周末才开始，我当然会去啦，因为钱都已经交了，就当温习嘛．第一件事当然就是看书啦，每单后面的书面实验，动手实验和复习题是必做的，这些对你学完一章是很好的检阅和补遗，记得把错的知识点圈起来多回头看．书看完第一遍后就可以开始背题库了（题目当然还是要理解的，死记硬背我可不会），最新的题库网上都找得到，记得多泡论">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-25T07:05:21.023Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CCNA经验谈">
+<meta name="twitter:description" content="不到三个星期的时候终于把CCNA搞定了，说点我自己的学习的经验吧．我还没开始上培训班，培训班这个周末才开始，我当然会去啦，因为钱都已经交了，就当温习嘛．第一件事当然就是看书啦，每单后面的书面实验，动手实验和复习题是必做的，这些对你学完一章是很好的检阅和补遗，记得把错的知识点圈起来多回头看．书看完第一遍后就可以开始背题库了（题目当然还是要理解的，死记硬背我可不会），最新的题库网上都找得到，记得多泡论">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://pagebrin.com/2008/03/CCNA经验谈/"/>
+
+
+
+
+
+  <title>CCNA经验谈 | 佩吉布林打卡門</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">佩吉布林打卡門</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://pagebrin.com/2008/03/CCNA经验谈/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Bill">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="佩吉布林打卡門">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CCNA经验谈</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2008-03-14T11:19:41+08:00">
+                2008-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">技术笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2008/03/CCNA经验谈/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2008/03/CCNA经验谈/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="asset-content"><br><div class="asset-body"><br><br>不到三个星期的时候终于把CCNA搞定了，说点我自己的学习的经验吧．我还没开始上培训班，培训班这个周末才开始，我当然会去啦，因为钱都已经交了，就当温习嘛．<br><br>第<br>一件事当然就是看书啦，每单后面的书面实验，动手实验和复习题是必做的，这些对你学完一章是很好的检阅和补遗，记得把错的知识点圈起来多回头看．书看完第<br>一遍后就可以开始背题库了（题目当然还是要理解的，死记硬背我可不会），最新的题库网上都找得到，记得多泡论坛，上面可能会有最近更新的题目．背题库的同<br>时最好结合可以做题的模拟考试来，这样记得比较牢．Java版的Pass4sure 和Visual CertExam<br>Suite都是很好的模拟软件，大家按需选择．实验的模拟器嘛，就先推荐Packet Tracer<br>4.11，RouterSim就不推荐了，感觉它的功能还是弱了点，而且用起来一直没习惯．就这样花一个星期背题库和做实验后如果你人品没问题的话上战场<br>就不会有问题了．<br><br>目前CCNA更新后的考试号为640-802，官方的报名费125us<br>dollar，但若换成人民币的话就会涨价一些，代理机构当然要从中揩点油水，所以本来不到900rmb到大家报名的时候就变成了1000多块，有支持美<br>元支付的信用卡可以试一下到Pearson<br>VUE上直接报名，可以省点银两．报名费确实贵了点，但服务还真不错，时间是自己预约的，到时候有事的话可以推迟点考，到的早的话还可以早点开始考，很自<br>由．我是在武汉誉天考的，目前湖北地区唯一的授权考点，考试也没有传说中的严格，一个考场里有三台电脑，考场内没有监考员，但有摄像头啦，有问题的时候直<br>接举手外面的美眉就会进来了．<br><br>考试的时候有点小插曲，我是用的2号机，也就是中间的一台，提醒大家那台电脑键盘数字键的4很有点不灵，<br>做实验题NAT配netmask的时候248居然被打成了28，还好sh<br>run的时候被检查出来了．实验题干上说还要配用户名和密码，我看用户名都已经配好了，就没有改了，结果这个地方好像还是被扣分了，所以大家考试的时候还<br>是多敲几张命令吧，只要不错敲就行．整个考试52道题，花了大概一个小时就搞定了，旁边跟我跟我一起的是考CCIE的，和我同进同出，拿到分数的时候，也<br>满镇静的，大家都过了．<br>  &gt; <font color="#008000">下面是一些文中提到的用得着的资源链接：</font><br>&gt;<br>&gt; <font color="#008000">参考课本：</font><a href="http://www.amazon.cn/mn/detailApp?qid=1205459643&amp;ref=SR&amp;sr=1-2&amp;uid=168-8985004-7513054&amp;prodid=bkbk801917#" target="_blank" rel="noopener"><font color="#008000">CCNA学习指南(中文第六版640-802) Todd Lammle 电子工业出版社</font></a><br>&gt;<br>&gt; <font color="#008000">推荐论坛：<a href="http://bbs.chinaitlab.com/frame.php?frameon=yes&amp;referer=http%3A//bbs.chinaitlab.com/" target="_blank" rel="noopener"><font color="#008000">中国IT实验室</font></a></font><br>&gt;<br>&gt; <a href="http://www.ciscohuawei.com/forumdisplay.php?fid=4&amp;page=1" target="_blank" rel="noopener"><font color="#008000">CiscoHuawei网络技术</font></a><font color="#008000">，这个论坛会经常性的开不了，应该是技术性的故障．</font><br>&gt;<br>&gt; <font color="#008000">实验用模拟器：</font><a href="http://search.gougou.com/search?search=Packet%20Tracer%204.11&amp;id=0" target="_blank" rel="noopener"><font color="#008000">Packet Tracer 4.11</font></a><br>&gt;<br>&gt; <font color="#008000">当<br>&gt; 前最新版题库网络熊猫V13++ (219题)和用于模拟做题的Visual CertExam<br>&gt; Suite破解版请点下面的链接然后下载．目前用于VCE的题库还只有V12版的，大家就先将就着用吧，至于Java版的Pass4sure<br>&gt; V2.93各论坛都有，我就不另外提供下载地址了.</font><br>&gt;    <iframe style="border: 1px solid rgb(221, 229, 233); margin: 3px; padding: 0px; width: 240px; height: 66px; background-color: rgb(255, 255, 255);" marginwidth="0" marginheight="0" src="http://cid-8ae83a3d09a7ef1a.skydrive.live.com/embedrowdetail.aspx/CISCO" scrolling="no" frameborder="0"></iframe><br></div><br></div>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ccna/" rel="tag"># ccna</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2008/03/CCNA，通过/" rel="next" title="CCNA，通过">
+                <i class="fa fa-chevron-left"></i> CCNA，通过
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2008/03/我的Gmail，Gtalk上不去/" rel="prev" title="我的Gmail，Gtalk上不去">
+                我的Gmail，Gtalk上不去 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Bill</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">104</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Bill</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://bostoneboy.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://pagebrin.com/2008/03/CCNA经验谈/';
+          this.page.identifier = '2008/03/CCNA经验谈/';
+          this.page.title = 'CCNA经验谈';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://bostoneboy.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
